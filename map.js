@@ -1,6 +1,23 @@
 var map;
 var layer;
+
 window.onload = function() {
+    var interactivity=['name',
+                        'code',
+                        'district',
+                        'national_rank',
+                        'number_enrolled',
+                        'number_pass',
+                        'number_teaching_staff',
+                        'ownership',
+                        'percentage_pass_round',
+                        'percentage_pass',
+                        'ratio',
+                        'region',
+                        'school_type',
+                        'ward'];
+
+
     map = L.map('map', {
         center: [-6.075,35.442],
         zoom: 6});
@@ -24,26 +41,36 @@ window.onload = function() {
     })
     .addTo(map);
     
-
-    var createSchools = function(map,query) {
-        query = "SELECT * FROM schools_merged_2013_correct_ratio_only " + (query || "")
-        cartodb.createLayer(map, {
+    cartodb.createLayer(map, {
                 user_name: 'svasdev',
                 type: 'cartodb',
                 sublayers: [{
-                    sql: query,
-                    cartocss: $("#schoolcss").html()
+                    sql: "SELECT * FROM schools_merged_2013_correct_ratio_only",
+                    interactivity: interactivity.join(","),
+                    cartocss: $("#schoolcss").html(),
     }]
     })
     .addTo(map)
     .on('done', function(l) {
-        if (layer) {
-            setTimeout(function(l) {
-                return function() {l.remove()}}(layer),2000);
-            layer.remove(); }
+        console.log('done');
+        l.getSubLayer(0).setInteraction(true);
+        l.on('featureClick',function(e,ll, p, data, l) {
+            console.log(data);
+            $("#info").html(Mustache.render($("#infowindow").html(), data));
+            })
+        l.on('featureOver', function() {
+            $(".leaflet-container").css("cursor","pointer");
+            });
+        l.on('featureOut', function() {
+            $(".leaflet-container").css("cursor","");
+            });
         layer = l });
-    }
-   createSchools(map,"");     
+    
+    var createSchools = function(map,query) {
+        query = "SELECT * FROM schools_merged_2013_correct_ratio_only " + (query || "")
+        layer.getSubLayer(0).setSQL(query); }
+
+   //createSchools(map,"");     
     
    $("#toggle").on('click',function() {
         $("#controls").toggleClass("visible");

@@ -8,7 +8,18 @@
 <body>
 
 <div id="map"></div>
-<div id="info"></div>
+<div id="info">
+<h1>Tanzania School Map</h1>
+<p>This map displays schools in Tanzania. The schools are colored based on
+the pass-rate of the students in the exit exams (PSLE and CSEE
+respectively) - the size of the marker shows the student-teacher ratio.
+Smaller circles have less students per teacher (smaller classes) than
+bigger ones</p>
+
+<p>Click on a marker for school details. Click on the gear (&#x2699;) to
+filter schools based on pass-rate, student-teacher ratios or
+school-type</p>
+</div>
 <div id="control">
 <a href="#" id="toggle">
 &#x2699;
@@ -85,6 +96,29 @@ data-compare="<=" min="0" max="150" value=150></input>
   marker-width: 15;
 }
 
+</script>
+<script type="template/html" id="infowindow">
+    <h1>{{name}}</h1>
+    <dl>
+    <dt>NECTA ID</dt>
+    <dd>{{code}}</dd>
+    <dt>Region</dt>
+    <dd>{{region}}</dt>
+    <dt>District</dt>
+    <dd>{{district}}</dt>
+    <dt>Ward</dt>
+    <dd>{{ward}}</dd>
+    <dt>Owner</dt>
+    <dd>{{ownership}}</dd>
+    <dt>Passrate</dt>
+    <dd>{{percentage_pass_round}}%</dd>
+    <dt>Teacher/Student Ratio</dt>
+    <dd>{{ratio}}</dd>
+    <dt>Students</dt>
+    <dd>{{number_enrolled}}</dd>
+    <dt>Teachers</dt>
+    <dd>{{number_teaching_staff}}</dd>
+    </dl>
 </script>
 </body>
 </html>
