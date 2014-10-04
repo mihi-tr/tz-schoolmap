@@ -37,6 +37,7 @@ dd { width: 65%;
 #toggle {
     text-decoration: none;
     color: black;
+    font-size: 17px;
     }
 
 #controls > .group > h1 {
