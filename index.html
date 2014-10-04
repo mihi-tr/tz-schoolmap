@@ -10,11 +10,81 @@
 <div id="map"></div>
 <div id="info"></div>
 <div id="control">
-<input id="ranger" type="range" name="foo" min="0" max="100" value=0></input>
-<label for="ranger">Passrate: <span id="rangedisplay">0</span>%</label>
+<a href="#" id="toggle">
+&#x2699;
+</a>
+<div id="controls">
+<div class="group">
+<h1>Passrate</h1>
+<div>
+<input class="filter" id="ranger" type="range" name="percentage_pass" data-compare=">=" min="0" max="100" value=0></input>
+<label for="ranger"><span id="rangedisplay">0</span>%</label>
+</div>
+</div>
+<div class="group">
+<h1>Student Teacher Ratio</h1>
+<div>
+<input class="filter" id="ranger" type="range" name="ratio" data-compare=">=" min="0" max="100" value=0></input>
+<label for="ranger">Min :<span id="rangedisplay">0</span></label>
+</div>
+<div>
+<input class="filter" id="ranger" type="range" name="ratio"
+data-compare="<=" min="0" max="150" value=150></input>
+<label for="ranger">Max :<span id="rangedisplay">150</span></label>
+</div>
+</div>
+<div class="group">
+<h1>School Type</h1>
+<div>
+<select class="filter" name="school_type" data-compare="like">
+    <option value="primary">Primary School</option>
+    <option value="secondary">Secondary School</option>
+    <option value="%" selected="True">All</option>
+</select>
+</div>
+</div>
+</div>
 </div>
 
 <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
 <script src="map.js"></script>
+<script type="cartocss" id="schoolcss">
+    /** category visualization */
+
+#schools_merged_2013_correct {
+   marker-fill-opacity: 0.9;
+   marker-line-color: #FFF;
+   marker-line-width: 1.5;
+   marker-line-opacity: .8;
+   marker-placement: point;
+   marker-type: ellipse;
+   marker-width: 7;
+   marker-allow-overlap: true;
+}
+
+#schools_merged_2013_correct_ratio_only[percentage_pass < 40] {
+   marker-fill: #F84F40;
+}
+#schools_merged_2013_correct_ratio_only[percentage_pass >= 40] {
+   marker-fill: #FFCC00;
+}
+#schools_merged_2013_correct_ratio_only[percentage_pass > 60] {
+   marker-fill: #229A00;
+}
+
+#schools_merged_2013_correct_ratio_only[ratio < 35] {
+  marker-width: 5;
+}
+
+#schools_merged_2013_correct_ratio_only[ratio >= 35] {
+  marker-width: 10;
+}
+
+
+#schools_merged_2013_correct_ratio_only[ratio >= 50] {
+  marker-width: 15;
+}
+
+</script>
 </body>
 </html>

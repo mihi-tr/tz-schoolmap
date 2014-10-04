@@ -32,35 +32,7 @@ window.onload = function() {
                 type: 'cartodb',
                 sublayers: [{
                     sql: query,
-                    cartocss: '#schools_merged_2013_correct {'+
-                               '   marker-fill-opacity: 0.9;'+
-                                '   marker-line-color: #FFF;'+
-                             '  marker-line-width: 1.5;'+
-    '   marker-line-opacity: .8;'+
-    '   marker-placement: point; '+
-    '   marker-type: ellipse;'+
-    '   marker-width: 7; '+
-    '   marker-allow-overlap: true;'+
-    '} '+
-    '#schools_merged_2013_correct_ratio_only[percentage_pass < 40] { '+
-    '   marker-fill: #F84F40;'+
-    '} '+
-    '#schools_merged_2013_correct_ratio_only[percentage_pass >= 40] { '+
-    '   marker-fill: #FFCC00; '+
-    '} '+
-    '#schools_merged_2013_correct_ratio_only[percentage_pass > 60] {'+
-    '   marker-fill: #229A00;'+
-    '}'+
-    '#schools_merged_2013_correct_ratio_only[ratio < 35] { '+
-    '  marker-width: 5;'+
-    '}'+
-    '#schools_merged_2013_correct_ratio_only[ratio >= 35] {'+
-    '  marker-width: 10;'+
-    '}'+
-    '#schools_merged_2013_correct_ratio_only[ratio >= 50] { '+
-    '  marker-width: 15;'+
-    '}'
-
+                    cartocss: $("#schoolcss").html()
     }]
     })
     .addTo(map)
@@ -72,11 +44,29 @@ window.onload = function() {
         layer = l });
     }
    createSchools(map,"");     
-   
-   document.getElementById("ranger").onchange=function() {
-            var v = this.value
-            var query = "WHERE percentage_pass >= " +v 
+    
+   $("#toggle").on('click',function() {
+        $("#controls").toggleClass("visible");
+    })
+    
+   $("input,select").on('change',function() {
+            var queries = [];
+            $(".filter").each(function(n,l) {
+                var e=$(l);
+                var v = e.val();
+                var what = e.attr("name");
+                var op = e.attr("data-compare");
+                $("label > span",e.parent()).html(v);
+                if (parseInt(v)) {
+                    v=v;}
+                else {
+                    v="'"+v+"'";
+                    };
+                var p=[what,op,v];
+                queries.push(p.join(" "));
+                });
+            var query="WHERE "+queries.join(" AND ");
+            console.log(query);
             createSchools(map,query);
-            document.getElementById("rangedisplay").innerHTML=v;
-            };
+            });
 }
